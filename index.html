@@ -610,7 +610,7 @@
         // 后端 API 地址，部署后修改这里
         const API_BASE = window.location.hostname === 'localhost' 
             ? 'http://localhost:3000/api' 
-            : 'https://fortune-backend.onrender.com/api'; // 默认 Render 地址
+            : '/api'; // 生产环境使用同域 API
         
         // ==================== 全局状态 ====================
         let currentUser = null;
