@@ -8,8 +8,8 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
         .container { max-width: 420px; margin: 0 auto; }
-        .nav-bar { display: flex; background: white; border-radius: 16px; padding: 8px; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
-        .nav-item { flex: 1; padding: 12px; text-align: center; border-radius: 12px; cursor: pointer; font-size: 14px; color: #666; }
+        .nav-bar { display: flex; background: white; border-radius: 16px; padding: 8px; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); overflow-x: auto; }
+        .nav-item { flex: 1; padding: 12px 8px; text-align: center; border-radius: 12px; cursor: pointer; font-size: 13px; color: #666; white-space: nowrap; }
         .nav-item.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-weight: 600; }
         .header { text-align: center; color: white; margin-bottom: 24px; }
         .card { background: white; border-radius: 20px; padding: 24px; margin-bottom: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
@@ -18,9 +18,10 @@
         .btn-secondary { background: #f0f0f0; color: #666; }
         .btn-wechat { background: #07C160; color: white; }
         .btn-github { background: #24292E; color: white; }
+        .btn-gold { background: linear-gradient(135deg, #FFD700, #FFA500); color: #333; }
         .form-group { margin-bottom: 16px; }
         .form-group label { display: block; color: #666; font-size: 14px; margin-bottom: 8px; }
-        .form-group input { width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 12px; font-size: 16px; }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 12px; font-size: 16px; }
         .login-options { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
         .divider { text-align: center; margin: 20px 0; position: relative; color: #999; font-size: 14px; }
         .divider::before, .divider::after { content: ''; position: absolute; top: 50%; width: 40%; height: 1px; background: #e0e0e0; }
@@ -28,22 +29,51 @@
         .score-circle { width: 120px; height: 120px; border-radius: 50%; background: conic-gradient(#667eea var(--score-deg), #f0f0f0 0); margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; position: relative; }
         .score-circle::before { content: ''; width: 100px; height: 100px; background: white; border-radius: 50%; position: absolute; }
         .score-number { position: relative; font-size: 36px; font-weight: bold; color: #667eea; }
+        .fortune-item { display: flex; align-items: center; padding: 12px; background: #f8f9fa; border-radius: 12px; margin-bottom: 12px; }
+        .fortune-item .label { width: 50px; color: #666; font-size: 14px; }
+        .fortune-item .bar { flex: 1; height: 8px; background: #e0e0e0; border-radius: 4px; margin: 0 12px; overflow: hidden; }
+        .fortune-item .bar-fill { height: 100%; border-radius: 4px; }
+        .fortune-item .value { width: 30px; text-align: right; font-weight: 600; font-size: 14px; }
+        .tips-section { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+        .tip-box { padding: 16px; border-radius: 12px; text-align: center; }
+        .tip-box.good { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
+        .tip-box.bad { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
+        .lucky-info { display: flex; justify-content: space-around; padding: 16px; background: #f8f9fa; border-radius: 12px; margin-bottom: 16px; }
+        .lucky-item { text-align: center; }
+        .lucky-item .lucky-label { font-size: 12px; color: #999; margin-bottom: 4px; }
+        .lucky-item .lucky-value { font-size: 16px; font-weight: 600; color: #667eea; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; text-align: center; }
+        .calendar-grid .weekday { font-size: 12px; color: #999; padding: 8px 0; }
+        .calendar-grid .day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 14px; color: #666; }
+        .calendar-grid .day.checked { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .calendar-grid .day.today { border: 2px solid #667eea; }
+        .ranking-item { display: flex; align-items: center; padding: 12px; border-bottom: 1px solid #f0f0f0; }
+        .ranking-item:last-child { border-bottom: none; }
+        .ranking-number { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold; font-size: 12px; margin-right: 12px; background: #f0f0f0; }
+        .ranking-number.top3 { background: linear-gradient(135deg, #FFD700, #FFA500); color: white; }
+        .memo-item { display: flex; align-items: center; padding: 12px; background: #f8f9fa; border-radius: 12px; margin-bottom: 8px; }
+        .memo-checkbox { width: 20px; height: 20px; margin-right: 12px; }
+        .memo-text { flex: 1; font-size: 14px; }
+        .memo-text.done { text-decoration: line-through; color: #999; }
+        .week-day-item { display: flex; align-items: center; padding: 12px; border-bottom: 1px solid #f0f0f0; }
+        .week-day-item:last-child { border-bottom: none; }
+        .week-day-name { width: 50px; font-size: 14px; color: #666; }
+        .week-day-bar { flex: 1; height: 20px; background: #e0e0e0; border-radius: 10px; overflow: hidden; margin: 0 12px; }
+        .week-day-fill { height: 100%; border-radius: 10px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; font-size: 11px; color: white; }
         .bindings-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
         .binding-item { display: flex; align-items: center; justify-content: space-between; padding: 12px; background: #f8f9fa; border-radius: 8px; }
-        .binding-provider { display: flex; align-items: center; gap: 8px; }
-        .provider-icon { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; }
-        .provider-local { background: #667eea; color: white; }
-        .provider-wechat { background: #07C160; color: white; }
-        .provider-github { background: #24292E; color: white; }
+        .provider-icon { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; margin-right: 8px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- 导航 -->
+        <!-- 导航栏 -->
         <div class="nav-bar" id="navBar">
-            <div class="nav-item active" onclick="switchPage('fortune')">运势</div>
-            <div class="nav-item" onclick="switchPage('account')">账户</div>
-            <div class="nav-item" onclick="switchPage('vip')">VIP</div>
+            <div class="nav-item active" onclick="switchPage('fortune', this)">今日</div>
+            <div class="nav-item" onclick="switchPage('week', this)">本周</div>
+            <div class="nav-item" onclick="switchPage('rank', this)">排行</div>
+            <div class="nav-item" onclick="switchPage('memo', this)">备忘</div>
+            <div class="nav-item" onclick="switchPage('account', this)">我的</div>
         </div>
         
         <div class="header">
@@ -51,7 +81,7 @@
             <div id="currentDate"></div>
         </div>
         
-        <!-- 登录页面 -->
+        <!-- 登录页 -->
         <div class="card" id="loginCard">
             <h3 style="margin-bottom:20px;text-align:center;">🔮 选择登录方式</h3>
             <div class="login-options">
@@ -70,21 +100,74 @@
             <button class="btn" onclick="loginWithLocal()">使用昵称登录</button>
         </div>
         
-        <!-- 运势页面 -->
+        <!-- 今日运势页 -->
         <div id="fortunePage" class="hidden">
             <div class="card">
                 <div style="text-align:center;">
-                    <div class="score-circle" id="scoreCircle">
-                        <span class="score-number" id="scoreNumber">-</span>
-                    </div>
+                    <div class="score-circle" id="scoreCircle"><span class="score-number" id="scoreNumber">-</span></div>
                     <div>今日综合运势</div>
                 </div>
-                <div id="fortuneDetails" style="margin-top:20px;"></div>
-                <button class="btn" onclick="checkIn()" id="checkInBtn" style="margin-top:20px;">今日打卡</button>
+                <div id="fortuneDetails" style="margin-top:20px;">
+                    <div class="fortune-item"><span class="label">事业</span><div class="bar"><div class="bar-fill" id="careerBar" style="width:0%;background:#667eea;"></div></div><span class="value" id="careerValue">-</span></div>
+                    <div class="fortune-item"><span class="label">财运</span><div class="bar"><div class="bar-fill" id="wealthBar" style="width:0%;background:#f093fb;"></div></div><span class="value" id="wealthValue">-</span></div>
+                    <div class="fortune-item"><span class="label">感情</span><div class="bar"><div class="bar-fill" id="loveBar" style="width:0%;background:#f5576c;"></div></div><span class="value" id="loveValue">-</span></div>
+                    <div class="fortune-item"><span class="label">健康</span><div class="bar"><div class="bar-fill" id="healthBar" style="width:0%;background:#4facfe;"></div></div><span class="value" id="healthValue">-</span></div>
+                </div>
+                <div class="lucky-info">
+                    <div class="lucky-item"><div class="lucky-label">幸运色</div><div class="lucky-value" id="luckyColor">-</div></div>
+                    <div class="lucky-item"><div class="lucky-label">幸运数字</div><div class="lucky-value" id="luckyNumber">-</div></div>
+                    <div class="lucky-item"><div class="lucky-label">吉时</div><div class="lucky-value" id="luckyTime">-</div></div>
+                </div>
+                <div class="tips-section">
+                    <div class="tip-box good"><div style="font-size:12px;color:#666;margin-bottom:4px;">✅ 宜</div><div style="font-size:14px;font-weight:600;" id="suitable">-</div></div>
+                    <div class="tip-box bad"><div style="font-size:12px;color:#666;margin-bottom:4px;">❌ 忌</div><div style="font-size:14px;font-weight:600;" id="avoid">-</div></div>
+                </div>
+                <button class="btn" onclick="checkIn()" id="checkInBtn">今日打卡</button>
+                <div style="display:flex;gap:12px;margin-top:16px;">
+                    <button class="btn btn-secondary" onclick="share()" style="flex:1;">📤 分享</button>
+                    <button class="btn btn-gold" onclick="showVIP()" style="flex:1;">👑 VIP</button>
+                </div>
+            </div>
+            <div class="card">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                    <h3>📅 本月打卡</h3><span style="color:#667eea;font-size:14px;">🔥 连续 <span id="streakDays">0</span> 天</span>
+                </div>
+                <div class="calendar-grid" id="calendarGrid"></div>
             </div>
         </div>
         
-        <!-- 账户页面 -->
+        <!-- 本周运势页 -->
+        <div id="weekPage" class="hidden">
+            <div class="card">
+                <h3 style="margin-bottom:16px;">📊 本周运势</h3>
+                <div id="weekList"></div>
+            </div>
+        </div>
+        
+        <!-- 排行榜页 -->
+        <div id="rankPage" class="hidden">
+            <div class="card">
+                <div style="display:flex;gap:8px;margin-bottom:16px;">
+                    <button class="btn btn-secondary" onclick="loadRanking('today')" style="flex:1;font-size:14px;">今日运势</button>
+                    <button class="btn btn-secondary" onclick="loadRanking('streak')" style="flex:1;font-size:14px;">连续打卡</button>
+                </div>
+                <div id="rankingList"></div>
+            </div>
+        </div>
+        
+        <!-- 备忘录页 -->
+        <div id="memoPage" class="hidden">
+            <div class="card">
+                <h3 style="margin-bottom:16px;">📝 今日备忘</h3>
+                <div style="display:flex;gap:8px;margin-bottom:16px;">
+                    <input type="text" id="memoInput" placeholder="添加备忘..." style="flex:1;padding:12px;border:2px solid #e0e0e0;border-radius:12px;">
+                    <button class="btn" onclick="addMemo()" style="width:auto;padding:12px 20px;">+</button>
+                </div>
+                <div id="memoList"></div>
+            </div>
+        </div>
+        
+        <!-- 我的账户页 -->
         <div id="accountPage" class="hidden">
             <div class="card">
                 <h3 style="margin-bottom:16px;">👤 账户信息</h3>
@@ -93,20 +176,14 @@
                 <div class="bindings-list" id="bindingsList"></div>
                 <button class="btn btn-secondary" onclick="logout()" style="margin-top:20px;">退出登录</button>
             </div>
-        </div>
-        
-        <!-- VIP页面 -->
-        <div id="vipPage" class="hidden">
             <div class="card" style="background:linear-gradient(135deg,#FFD700,#FFA500);color:#333;">
-                <h2>👑 VIP会员</h2>
+                <h3>👑 VIP会员</h3>
                 <div style="display:flex;gap:12px;margin:20px 0;">
                     <div style="flex:1;text-align:center;padding:16px;background:rgba(255,255,255,0.5);border-radius:12px;cursor:pointer;" onclick="buyVIP('month')">
-                        <div style="font-size:24px;font-weight:bold;">¥9.9</div>
-                        <div style="font-size:12px;">月度</div>
+                        <div style="font-size:24px;font-weight:bold;">¥9.9</div><div style="font-size:12px;">月度</div>
                     </div>
                     <div style="flex:1;text-align:center;padding:16px;background:white;border-radius:12px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.2);" onclick="buyVIP('year')">
-                        <div style="font-size:24px;font-weight:bold;">¥69</div>
-                        <div style="font-size:12px;">年度</div>
+                        <div style="font-size:24px;font-weight:bold;">¥69</div><div style="font-size:12px;">年度</div>
                     </div>
                 </div>
             </div>
@@ -117,46 +194,40 @@
         const API_BASE = '/api';
         let currentAccount = null;
         let authToken = localStorage.getItem('fortune_token');
+        let currentPage = 'fortune';
         
         // 页面切换
-        function switchPage(page) {
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            event.target.classList.add('active');
+        function switchPage(page, el) {
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            if (el) el.classList.add('active');
             
-            document.getElementById('fortunePage').classList.add('hidden');
-            document.getElementById('accountPage').classList.add('hidden');
-            document.getElementById('vipPage').classList.add('hidden');
-            document.getElementById('loginCard').classList.add('hidden');
+            ['loginCard', 'fortunePage', 'weekPage', 'rankPage', 'memoPage', 'accountPage'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
             
-            if (page === 'fortune') {
-                if (!currentAccount) {
-                    document.getElementById('loginCard').classList.remove('hidden');
-                } else {
-                    document.getElementById('fortunePage').classList.remove('hidden');
-                    loadFortune();
-                }
-            } else if (page === 'account') {
-                if (!currentAccount) {
-                    document.getElementById('loginCard').classList.remove('hidden');
-                } else {
-                    document.getElementById('accountPage').classList.remove('hidden');
-                    loadAccountInfo();
-                }
-            } else if (page === 'vip') {
-                document.getElementById('vipPage').classList.remove('hidden');
+            if (!currentAccount) {
+                document.getElementById('loginCard').classList.remove('hidden');
+                return;
             }
+            
+            currentPage = page;
+            document.getElementById(page + 'Page').classList.remove('hidden');
+            
+            if (page === 'fortune') loadFortune();
+            if (page === 'week') loadWeekFortune();
+            if (page === 'rank') loadRanking('today');
+            if (page === 'memo') loadMemos();
+            if (page === 'account') loadAccountInfo();
         }
         
-        // 本地登录
+        // 登录相关
         async function loginWithLocal() {
             const nickname = document.getElementById('nickname').value;
             const birthday = document.getElementById('birthday').value;
             if (!nickname || !birthday) return alert('请填写完整信息');
-            
             await doLogin('/auth/local', { nickname, birthday });
         }
         
-        // 微信登录（模拟）
         async function loginWithWechat() {
             const code = 'mock_wx_code_' + Date.now();
             const res = await fetch(`${API_BASE}/auth/wechat`, {
@@ -167,14 +238,10 @@
             if (res.needProfile) {
                 const nickname = prompt('请输入昵称：');
                 const birthday = prompt('请输入生日（YYYY-MM-DD）：');
-                if (!nickname || !birthday) return;
-                await doLogin('/auth/wechat', { code, nickname, birthday });
-            } else if (res.token) {
-                handleLoginSuccess(res);
-            }
+                if (nickname && birthday) await doLogin('/auth/wechat', { code, nickname, birthday });
+            } else if (res.token) handleLoginSuccess(res);
         }
         
-        // GitHub登录（模拟）
         async function loginWithGithub() {
             const code = 'mock_gh_code_' + Date.now();
             const res = await fetch(`${API_BASE}/auth/github`, {
@@ -185,11 +252,8 @@
             if (res.needProfile) {
                 const nickname = prompt('请输入昵称：');
                 const birthday = prompt('请输入生日（YYYY-MM-DD）：');
-                if (!nickname || !birthday) return;
-                await doLogin('/auth/github', { code, nickname, birthday });
-            } else if (res.token) {
-                handleLoginSuccess(res);
-            }
+                if (nickname && birthday) await doLogin('/auth/github', { code, nickname, birthday });
+            } else if (res.token) handleLoginSuccess(res);
         }
         
         async function doLogin(url, data) {
@@ -197,7 +261,6 @@
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             }).then(r => r.json());
-            
             if (res.success) handleLoginSuccess(res);
         }
         
@@ -211,86 +274,195 @@
             loadFortune();
         }
         
+        // 加载运势
         async function loadFortune() {
             const res = await fetchWithAuth('/fortune/today');
-            if (res.success) {
-                document.getElementById('scoreNumber').textContent = res.fortune.overall;
-                document.getElementById('scoreCircle').style.setProperty('--score-deg', (res.fortune.overall/100*360) + 'deg');
-                if (res.hasCheckedIn) {
-                    document.getElementById('checkInBtn').textContent = '已打卡 ✓';
-                    document.getElementById('checkInBtn').disabled = true;
-                }
-            }
+            if (!res.success) return;
+            
+            const f = res.fortune;
+            document.getElementById('scoreNumber').textContent = f.overall;
+            document.getElementById('scoreCircle').style.setProperty('--score-deg', (f.overall/100*360) + 'deg');
+            
+            document.getElementById('careerValue').textContent = f.career;
+            document.getElementById('careerBar').style.width = f.career + '%';
+            document.getElementById('wealthValue').textContent = f.wealth;
+            document.getElementById('wealthBar').style.width = f.wealth + '%';
+            document.getElementById('loveValue').textContent = f.love;
+            document.getElementById('loveBar').style.width = f.love + '%';
+            document.getElementById('healthValue').textContent = f.health;
+            document.getElementById('healthBar').style.width = f.health + '%';
+            
+            document.getElementById('luckyColor').textContent = f.luckyColor;
+            document.getElementById('luckyNumber').textContent = f.luckyNumber;
+            document.getElementById('luckyTime').textContent = f.luckyTime;
+            document.getElementById('suitable').textContent = f.suitable;
+            document.getElementById('avoid').textContent = f.avoid;
+            
+            document.getElementById('checkInBtn').textContent = res.hasCheckedIn ? '已打卡 ✓' : '今日打卡';
+            document.getElementById('checkInBtn').disabled = res.hasCheckedIn;
+            
+            loadCalendar();
         }
         
+        // 加载日历
+        async function loadCalendar() {
+            const res = await fetchWithAuth('/checkins?month=' + new Date().toISOString().slice(0, 7));
+            if (!res.success) return;
+            
+            const checkins = res.checkins || [];
+            document.getElementById('streakDays').textContent = res.stats?.streakDays || 0;
+            
+            const days = ['日', '一', '二', '三', '四', '五', '六'];
+            let html = days.map(d => `<div class="weekday">${d}</div>`).join('');
+            
+            const now = new Date();
+            const year = now.getFullYear(), month = now.getMonth();
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const today = now.getDate();
+            
+            const checkedDates = new Set(checkins.map(c => parseInt(c.date.split('-')[2])));
+            
+            for (let i = 0; i < firstDay; i++) html += '<div></div>';
+            for (let d = 1; d <= daysInMonth; d++) {
+                const isChecked = checkedDates.has(d);
+                const isToday = d === today;
+                html += `<div class="day ${isChecked ? 'checked' : ''} ${isToday ? 'today' : ''}">${d}</div>`;
+            }
+            document.getElementById('calendarGrid').innerHTML = html;
+        }
+        
+        // 打卡
         async function checkIn() {
             const res = await fetchWithAuth('/checkin', { method: 'POST' });
             if (res.success) {
                 document.getElementById('checkInBtn').textContent = '已打卡 ✓';
                 document.getElementById('checkInBtn').disabled = true;
-                alert(`打卡成功！连续 ${res.streak} 天`);
+                loadCalendar();
             }
         }
         
+        // 周运势
+        async function loadWeekFortune() {
+            const res = await fetchWithAuth('/fortune/week');
+            if (!res.success) return;
+            
+            const html = res.weekFortunes.map(d => {
+                const color = d.fortune.overall >= 80 ? '#667eea' : d.fortune.overall >= 60 ? '#f093fb' : '#fcb69f';
+                return `
+                    <div class="week-day-item">
+                        <div class="week-day-name">周${d.weekday} ${d.isToday ? '(今天)' : ''}</div>
+                        <div class="week-day-bar"><div class="week-day-fill" style="width:${d.fortune.overall}%;background:${color};">${d.fortune.overall}</div></div>
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('weekList').innerHTML = html;
+        }
+        
+        // 排行榜
+        async function loadRanking(type) {
+            const res = await fetchWithAuth('/rankings?type=' + type);
+            if (!res.success) return;
+            
+            const html = res.rankings.map((r, i) => `
+                <div class="ranking-item">
+                    <div class="ranking-number ${i < 3 ? 'top3' : ''}">${r.rank}</div>
+                    <div style="flex:1;">${r.nickname}</div>
+                    <div style="font-weight:600;color:#667eea;">${r.score || r.streak}${type === 'today' ? '分' : '天'}</div>
+                </div>
+            `).join('');
+            document.getElementById('rankingList').innerHTML = html;
+        }
+        
+        // 备忘录
+        async function loadMemos() {
+            const res = await fetchWithAuth('/memos?date=' + new Date().toISOString().split('T')[0]);
+            if (!res.success) return;
+            
+            const html = res.memos.map(m => `
+                <div class="memo-item">
+                    <input type="checkbox" class="memo-checkbox" ${m.isDone ? 'checked' : ''} onchange="toggleMemo('${m._id}', this.checked)">
+                    <div class="memo-text ${m.isDone ? 'done' : ''}">${m.content}</div>
+                    <span onclick="deleteMemo('${m._id}')" style="color:#ff4757;cursor:pointer;">×</span>
+                </div>
+            `).join('');
+            document.getElementById('memoList').innerHTML = html || '<div style="text-align:center;color:#999;padding:20px;">暂无备忘</div>';
+        }
+        
+        async function addMemo() {
+            const content = document.getElementById('memoInput').value;
+            if (!content) return;
+            await fetchWithAuth('/memos', {
+                method: 'POST',
+                body: JSON.stringify({ content, date: new Date().toISOString().split('T')[0] })
+            });
+            document.getElementById('memoInput').value = '';
+            loadMemos();
+        }
+        
+        async function toggleMemo(id, isDone) {
+            await fetchWithAuth(`/memos/${id}`, { method: 'PUT', body: JSON.stringify({ isDone }) });
+            loadMemos();
+        }
+        
+        async function deleteMemo(id) {
+            await fetchWithAuth(`/memos/${id}`, { method: 'DELETE' });
+            loadMemos();
+        }
+        
+        // 账户信息
         async function loadAccountInfo() {
             const res = await fetchWithAuth('/account');
-            if (res.success) {
-                const acc = res.account;
-                document.getElementById('accountInfo').innerHTML = `
-                    <div><strong>昵称：</strong>${acc.profile.nickname}</div>
-                    <div><strong>生日：</strong>${acc.profile.birthday}</div>
-                    <div><strong>VIP：</strong>${acc.vip.isVip ? '已开通' : '未开通'}</div>
-                `;
-                
-                document.getElementById('bindingsList').innerHTML = acc.bindings.map(b => `
-                    <div class="binding-item">
-                        <div class="binding-provider">
-                            <span class="provider-icon provider-${b.provider}">${getProviderIcon(b.provider)}</span>
-                            <span>${getProviderName(b.provider)}</span>
-                        </div>
-                        <span style="font-size:12px;color:#999;">${new Date(b.boundAt).toLocaleDateString()}</span>
-                    </div>
-                `).join('');
-            }
-        }
-        
-        function getProviderIcon(p) {
+            if (!res.success) return;
+            
+            const acc = res.account;
+            document.getElementById('accountInfo').innerHTML = `
+                <div style="margin-bottom:8px;"><strong>昵称：</strong>${acc.profile.nickname}</div>
+                <div style="margin-bottom:8px;"><strong>生日：</strong>${acc.profile.birthday}</div>
+                <div><strong>VIP：</strong>${acc.vip.isVip ? '已开通' : '未开通'}</div>
+            `;
+            
             const icons = { local: '👤', wechat: '💬', github: '🐙' };
-            return icons[p] || '?';
+            document.getElementById('bindingsList').innerHTML = acc.bindings.map(b => `
+                <div class="binding-item">
+                    <div style="display:flex;align-items:center;">
+                        <span class="provider-icon" style="background:${b.provider === 'wechat' ? '#07C160' : b.provider === 'github' ? '#24292E' : '#667eea'};color:white;">${icons[b.provider] || '?'}</span>
+                        <span>${b.provider === 'local' ? '昵称登录' : b.provider === 'wechat' ? '微信' : 'GitHub'}</span>
+                    </div>
+                </div>
+            `).join('');
         }
         
-        function getProviderName(p) {
-            const names = { local: '昵称登录', wechat: '微信', github: 'GitHub' };
-            return names[p] || p;
+        // 工具函数
+        async function fetchWithAuth(url, options = {}) {
+            options.headers = options.headers || {};
+            options.headers['Authorization'] = `Bearer ${authToken}`;
+            options.headers['Content-Type'] = 'application/json';
+            return fetch(`${API_BASE}${url}`, options).then(r => r.json());
         }
+        
+        function share() {
+            const text = `今日运势：${currentAccount?.nickname || ''} 的综合运势是 ${document.getElementById('scoreNumber').textContent} 分！`;
+            if (navigator.share) navigator.share({ title: '每日运势', text, url: location.href });
+            else alert('复制分享：\n' + text);
+        }
+        
+        function showVIP() { switchPage('account'); }
+        function buyVIP(type) { alert(`创建${type === 'month' ? '月度' : '年度'}VIP订单\n需接入真实支付`); }
         
         function logout() {
             localStorage.removeItem('fortune_token');
             localStorage.removeItem('fortune_account');
-            currentAccount = null;
-            authToken = null;
             location.reload();
-        }
-        
-        function buyVIP(type) {
-            const prices = { month: 9.9, year: 69 };
-            alert(`创建${type === 'month' ? '月度' : '年度'}会员订单\n价格：¥${prices[type]}\n（实际支付需接入支付接口）`);
-        }
-        
-        async function fetchWithAuth(url, options = {}) {
-            options.headers = options.headers || {};
-            options.headers['Authorization'] = `Bearer ${authToken}`;
-            return fetch(`${API_BASE}${url}`, options).then(r => r.json());
         }
         
         // 初始化
         document.getElementById('currentDate').textContent = new Date().toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' });
         document.getElementById('birthday').max = new Date().toISOString().split('T')[0];
         
-        // 检查登录状态
-        const savedAccount = localStorage.getItem('fortune_account');
-        if (savedAccount && authToken) {
-            currentAccount = JSON.parse(savedAccount);
+        const saved = localStorage.getItem('fortune_account');
+        if (saved && authToken) {
+            currentAccount = JSON.parse(saved);
             document.getElementById('loginCard').classList.add('hidden');
             document.getElementById('fortunePage').classList.remove('hidden');
             loadFortune();
