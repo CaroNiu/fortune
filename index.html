@@ -6,73 +6,44 @@
     <title>每日运势 - Daily Fortune</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
         .container { max-width: 420px; margin: 0 auto; }
-        .nav-bar {
-            display: flex; background: white; border-radius: 16px;
-            padding: 8px; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        }
-        .nav-item {
-            flex: 1; padding: 12px; text-align: center;
-            border-radius: 12px; cursor: pointer; font-size: 14px; color: #666;
-        }
-        .nav-item.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white; font-weight: 600;
-        }
+        .nav-bar { display: flex; background: white; border-radius: 16px; padding: 8px; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .nav-item { flex: 1; padding: 12px; text-align: center; border-radius: 12px; cursor: pointer; font-size: 14px; color: #666; }
+        .nav-item.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-weight: 600; }
         .header { text-align: center; color: white; margin-bottom: 24px; }
-        .header h1 { font-size: 28px; margin-bottom: 8px; }
-        .card {
-            background: white; border-radius: 20px;
-            padding: 24px; margin-bottom: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-        }
+        .card { background: white; border-radius: 20px; padding: 24px; margin-bottom: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
         .hidden { display: none !important; }
-        .btn {
-            width: 100%; padding: 14px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white; border: none; border-radius: 12px;
-            font-size: 16px; font-weight: 600; cursor: pointer;
-        }
-        .btn-gold {
-            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-            color: #333;
-        }
+        .btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; }
+        .btn-secondary { background: #f0f0f0; color: #666; }
+        .btn-wechat { background: #07C160; color: white; }
+        .btn-github { background: #24292E; color: white; }
         .form-group { margin-bottom: 16px; }
         .form-group label { display: block; color: #666; font-size: 14px; margin-bottom: 8px; }
-        .form-group input, .form-group textarea {
-            width: 100%; padding: 12px; border: 2px solid #e0e0e0;
-            border-radius: 12px; font-size: 16px;
-        }
-        /* 运势相关样式 */
-        .score-section { text-align: center; margin-bottom: 24px; }
-        .score-circle {
-            width: 120px; height: 120px; border-radius: 50%;
-            background: conic-gradient(#667eea var(--score-deg), #f0f0f0 0);
-            margin: 0 auto 16px; display: flex; align-items: center; justify-content: center;
-            position: relative;
-        }
-        .score-circle::before {
-            content: ''; width: 100px; height: 100px; background: white;
-            border-radius: 50%; position: absolute;
-        }
+        .form-group input { width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 12px; font-size: 16px; }
+        .login-options { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
+        .divider { text-align: center; margin: 20px 0; position: relative; color: #999; font-size: 14px; }
+        .divider::before, .divider::after { content: ''; position: absolute; top: 50%; width: 40%; height: 1px; background: #e0e0e0; }
+        .divider::before { left: 0; } .divider::after { right: 0; }
+        .score-circle { width: 120px; height: 120px; border-radius: 50%; background: conic-gradient(#667eea var(--score-deg), #f0f0f0 0); margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; position: relative; }
+        .score-circle::before { content: ''; width: 100px; height: 100px; background: white; border-radius: 50%; position: absolute; }
         .score-number { position: relative; font-size: 36px; font-weight: bold; color: #667eea; }
-        /* 更多样式省略... */
+        .bindings-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+        .binding-item { display: flex; align-items: center; justify-content: space-between; padding: 12px; background: #f8f9fa; border-radius: 8px; }
+        .binding-provider { display: flex; align-items: center; gap: 8px; }
+        .provider-icon { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+        .provider-local { background: #667eea; color: white; }
+        .provider-wechat { background: #07C160; color: white; }
+        .provider-github { background: #24292E; color: white; }
     </style>
 </head>
 <body>
     <div class="container">
         <!-- 导航 -->
         <div class="nav-bar" id="navBar">
-            <div class="nav-item active" onclick="switchPage('fortune')">今日运势</div>
-            <div class="nav-item" onclick="switchPage('week')">本周运势</div>
-            <div class="nav-item" onclick="switchPage('rank')">排行榜</div>
-            <div class="nav-item" onclick="switchPage('memo')">备忘录</div>
+            <div class="nav-item active" onclick="switchPage('fortune')">运势</div>
+            <div class="nav-item" onclick="switchPage('account')">账户</div>
+            <div class="nav-item" onclick="switchPage('vip')">VIP</div>
         </div>
         
         <div class="header">
@@ -80,9 +51,14 @@
             <div id="currentDate"></div>
         </div>
         
-        <!-- 登录 -->
+        <!-- 登录页面 -->
         <div class="card" id="loginCard">
-            <h3>🔮 先告诉我你的生日</h3>
+            <h3 style="margin-bottom:20px;text-align:center;">🔮 选择登录方式</h3>
+            <div class="login-options">
+                <button class="btn btn-wechat" onclick="loginWithWechat()">🟢 微信登录</button>
+                <button class="btn btn-github" onclick="loginWithGithub()">⚫ GitHub登录</button>
+            </div>
+            <div class="divider">或</div>
             <div class="form-group">
                 <label>昵称</label>
                 <input type="text" id="nickname" placeholder="怎么称呼你？">
@@ -91,49 +67,47 @@
                 <label>出生日期</label>
                 <input type="date" id="birthday">
             </div>
-            <button class="btn" onclick="login()">开始测算</button>
+            <button class="btn" onclick="loginWithLocal()">使用昵称登录</button>
         </div>
         
-        <!-- 运势页 -->
+        <!-- 运势页面 -->
         <div id="fortunePage" class="hidden">
             <div class="card">
-                <div class="score-section">
+                <div style="text-align:center;">
                     <div class="score-circle" id="scoreCircle">
                         <span class="score-number" id="scoreNumber">-</span>
                     </div>
                     <div>今日综合运势</div>
                 </div>
-                <div id="fortuneDetails"></div>
-                <button class="btn" onclick="checkIn()" id="checkInBtn">今日打卡</button>
-                <div style="display:flex;gap:12px;margin-top:16px;">
-                    <button class="btn btn-secondary" onclick="share()" style="flex:1;background:#f0f0f0;color:#667eea;">分享</button>
-                    <button class="btn btn-gold" onclick="showVIP()" style="flex:1;">解锁VIP</button>
-                </div>
+                <div id="fortuneDetails" style="margin-top:20px;"></div>
+                <button class="btn" onclick="checkIn()" id="checkInBtn" style="margin-top:20px;">今日打卡</button>
             </div>
         </div>
         
-        <!-- VIP页 -->
+        <!-- 账户页面 -->
+        <div id="accountPage" class="hidden">
+            <div class="card">
+                <h3 style="margin-bottom:16px;">👤 账户信息</h3>
+                <div id="accountInfo"></div>
+                <h4 style="margin:20px 0 12px;">已绑定登录方式：</h4>
+                <div class="bindings-list" id="bindingsList"></div>
+                <button class="btn btn-secondary" onclick="logout()" style="margin-top:20px;">退出登录</button>
+            </div>
+        </div>
+        
+        <!-- VIP页面 -->
         <div id="vipPage" class="hidden">
             <div class="card" style="background:linear-gradient(135deg,#FFD700,#FFA500);color:#333;">
-                <h2>👑 升级VIP</h2>
-                <p>解锁详细运势解读、周运势、专属海报等特权</p>
+                <h2>👑 VIP会员</h2>
                 <div style="display:flex;gap:12px;margin:20px 0;">
                     <div style="flex:1;text-align:center;padding:16px;background:rgba(255,255,255,0.5);border-radius:12px;cursor:pointer;" onclick="buyVIP('month')">
                         <div style="font-size:24px;font-weight:bold;">¥9.9</div>
-                        <div style="font-size:12px;">月度会员</div>
+                        <div style="font-size:12px;">月度</div>
                     </div>
                     <div style="flex:1;text-align:center;padding:16px;background:white;border-radius:12px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.2);" onclick="buyVIP('year')">
                         <div style="font-size:24px;font-weight:bold;">¥69</div>
-                        <div style="font-size:12px;">年度会员</div>
-                        <div style="font-size:10px;color:#ff4757;">省¥50</div>
+                        <div style="font-size:12px;">年度</div>
                     </div>
-                </div>
-                <div style="font-size:13px;opacity:0.9;">
-                    ✅ 详细运势解读<br>
-                    ✅ 本周运势预测<br>
-                    ✅ 专属运势海报<br>
-                    ✅ 运势排行榜<br>
-                    ✅ 无广告体验
                 </div>
             </div>
         </div>
@@ -141,8 +115,8 @@
     
     <script>
         const API_BASE = '/api';
-        let currentUser = null;
-        let currentPage = 'fortune';
+        let currentAccount = null;
+        let authToken = localStorage.getItem('fortune_token');
         
         // 页面切换
         function switchPage(page) {
@@ -150,44 +124,98 @@
             event.target.classList.add('active');
             
             document.getElementById('fortunePage').classList.add('hidden');
+            document.getElementById('accountPage').classList.add('hidden');
             document.getElementById('vipPage').classList.add('hidden');
+            document.getElementById('loginCard').classList.add('hidden');
             
             if (page === 'fortune') {
-                document.getElementById('fortunePage').classList.remove('hidden');
+                if (!currentAccount) {
+                    document.getElementById('loginCard').classList.remove('hidden');
+                } else {
+                    document.getElementById('fortunePage').classList.remove('hidden');
+                    loadFortune();
+                }
+            } else if (page === 'account') {
+                if (!currentAccount) {
+                    document.getElementById('loginCard').classList.remove('hidden');
+                } else {
+                    document.getElementById('accountPage').classList.remove('hidden');
+                    loadAccountInfo();
+                }
             } else if (page === 'vip') {
                 document.getElementById('vipPage').classList.remove('hidden');
             }
-            currentPage = page;
         }
         
-        // 登录
-        async function login() {
+        // 本地登录
+        async function loginWithLocal() {
             const nickname = document.getElementById('nickname').value;
             const birthday = document.getElementById('birthday').value;
             if (!nickname || !birthday) return alert('请填写完整信息');
             
-            const res = await fetch(`${API_BASE}/auth`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({nickname, birthday})
+            await doLogin('/auth/local', { nickname, birthday });
+        }
+        
+        // 微信登录（模拟）
+        async function loginWithWechat() {
+            const code = 'mock_wx_code_' + Date.now();
+            const res = await fetch(`${API_BASE}/auth/wechat`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code })
             }).then(r => r.json());
             
-            if (res.success) {
-                currentUser = res.user;
-                localStorage.setItem('fortune_user', JSON.stringify(currentUser));
-                document.getElementById('loginCard').classList.add('hidden');
-                loadFortune();
+            if (res.needProfile) {
+                const nickname = prompt('请输入昵称：');
+                const birthday = prompt('请输入生日（YYYY-MM-DD）：');
+                if (!nickname || !birthday) return;
+                await doLogin('/auth/wechat', { code, nickname, birthday });
+            } else if (res.token) {
+                handleLoginSuccess(res);
             }
         }
         
-        // 加载运势
+        // GitHub登录（模拟）
+        async function loginWithGithub() {
+            const code = 'mock_gh_code_' + Date.now();
+            const res = await fetch(`${API_BASE}/auth/github`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code })
+            }).then(r => r.json());
+            
+            if (res.needProfile) {
+                const nickname = prompt('请输入昵称：');
+                const birthday = prompt('请输入生日（YYYY-MM-DD）：');
+                if (!nickname || !birthday) return;
+                await doLogin('/auth/github', { code, nickname, birthday });
+            } else if (res.token) {
+                handleLoginSuccess(res);
+            }
+        }
+        
+        async function doLogin(url, data) {
+            const res = await fetch(`${API_BASE}${url}`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            }).then(r => r.json());
+            
+            if (res.success) handleLoginSuccess(res);
+        }
+        
+        function handleLoginSuccess(res) {
+            currentAccount = res.account;
+            authToken = res.token;
+            localStorage.setItem('fortune_token', authToken);
+            localStorage.setItem('fortune_account', JSON.stringify(currentAccount));
+            document.getElementById('loginCard').classList.add('hidden');
+            document.getElementById('fortunePage').classList.remove('hidden');
+            loadFortune();
+        }
+        
         async function loadFortune() {
-            const res = await fetch(`${API_BASE}/fortune/${currentUser.id}`).then(r => r.json());
+            const res = await fetchWithAuth('/fortune/today');
             if (res.success) {
                 document.getElementById('scoreNumber').textContent = res.fortune.overall;
                 document.getElementById('scoreCircle').style.setProperty('--score-deg', (res.fortune.overall/100*360) + 'deg');
-                document.getElementById('fortunePage').classList.remove('hidden');
-                
                 if (res.hasCheckedIn) {
                     document.getElementById('checkInBtn').textContent = '已打卡 ✓';
                     document.getElementById('checkInBtn').disabled = true;
@@ -195,51 +223,76 @@
             }
         }
         
-        // 打卡
         async function checkIn() {
-            const res = await fetch(`${API_BASE}/checkin`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({userId: currentUser.id})
-            }).then(r => r.json());
-            
+            const res = await fetchWithAuth('/checkin', { method: 'POST' });
             if (res.success) {
                 document.getElementById('checkInBtn').textContent = '已打卡 ✓';
                 document.getElementById('checkInBtn').disabled = true;
-                alert('打卡成功！');
+                alert(`打卡成功！连续 ${res.streak} 天`);
             }
         }
         
-        // 显示VIP
-        function showVIP() {
-            document.getElementById('fortunePage').classList.add('hidden');
-            document.getElementById('vipPage').classList.remove('hidden');
+        async function loadAccountInfo() {
+            const res = await fetchWithAuth('/account');
+            if (res.success) {
+                const acc = res.account;
+                document.getElementById('accountInfo').innerHTML = `
+                    <div><strong>昵称：</strong>${acc.profile.nickname}</div>
+                    <div><strong>生日：</strong>${acc.profile.birthday}</div>
+                    <div><strong>VIP：</strong>${acc.vip.isVip ? '已开通' : '未开通'}</div>
+                `;
+                
+                document.getElementById('bindingsList').innerHTML = acc.bindings.map(b => `
+                    <div class="binding-item">
+                        <div class="binding-provider">
+                            <span class="provider-icon provider-${b.provider}">${getProviderIcon(b.provider)}</span>
+                            <span>${getProviderName(b.provider)}</span>
+                        </div>
+                        <span style="font-size:12px;color:#999;">${new Date(b.boundAt).toLocaleDateString()}</span>
+                    </div>
+                `).join('');
+            }
         }
         
-        // 购买VIP
+        function getProviderIcon(p) {
+            const icons = { local: '👤', wechat: '💬', github: '🐙' };
+            return icons[p] || '?';
+        }
+        
+        function getProviderName(p) {
+            const names = { local: '昵称登录', wechat: '微信', github: 'GitHub' };
+            return names[p] || p;
+        }
+        
+        function logout() {
+            localStorage.removeItem('fortune_token');
+            localStorage.removeItem('fortune_account');
+            currentAccount = null;
+            authToken = null;
+            location.reload();
+        }
+        
         function buyVIP(type) {
-            const prices = {month: 9.9, year: 69};
-            alert(`正在创建 ${type === 'month' ? '月度' : '年度'}会员订单...\n价格：¥${prices[type]}\n\n（实际支付需要接入支付接口）`);
+            const prices = { month: 9.9, year: 69 };
+            alert(`创建${type === 'month' ? '月度' : '年度'}会员订单\n价格：¥${prices[type]}\n（实际支付需接入支付接口）`);
         }
         
-        // 分享
-        function share() {
-            const text = `今日运势：${currentUser?.nickname || ''} 的综合运势是 ${document.getElementById('scoreNumber').textContent} 分！快来测测你的运势吧~`;
-            if (navigator.share) {
-                navigator.share({title: '每日运势', text, url: location.href});
-            } else {
-                alert('复制以下内容分享：\n\n' + text + '\n' + location.href);
-            }
+        async function fetchWithAuth(url, options = {}) {
+            options.headers = options.headers || {};
+            options.headers['Authorization'] = `Bearer ${authToken}`;
+            return fetch(`${API_BASE}${url}`, options).then(r => r.json());
         }
         
         // 初始化
-        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('zh-CN', {year:'numeric', month:'long', day:'numeric', weekday:'long'});
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' });
         document.getElementById('birthday').max = new Date().toISOString().split('T')[0];
         
-        const savedUser = localStorage.getItem('fortune_user');
-        if (savedUser) {
-            currentUser = JSON.parse(savedUser);
+        // 检查登录状态
+        const savedAccount = localStorage.getItem('fortune_account');
+        if (savedAccount && authToken) {
+            currentAccount = JSON.parse(savedAccount);
             document.getElementById('loginCard').classList.add('hidden');
+            document.getElementById('fortunePage').classList.remove('hidden');
             loadFortune();
         }
     </script>
