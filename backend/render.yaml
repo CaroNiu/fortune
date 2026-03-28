@@ -7,5 +7,5 @@ services:
     startCommand: node server.js
     envVars:
       - key: MONGODB_URI
-        value: mongodb+srv://your_username:your_password@cluster.mongodb.net/fortune?retryWrites=true&w=majority
+        value: mongodb+srv://creaternuri_db_user:pGdSH0m8VAZssLV6@cluster0.b5di47j.mongodb.net/fortune?retryWrites=true&w=majority&appName=Cluster0
     healthCheckPath: /api/health
