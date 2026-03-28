@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: fortune-backend
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: MONGODB_URI
+        value: mongodb+srv://your_username:your_password@cluster.mongodb.net/fortune?retryWrites=true&w=majority
+    healthCheckPath: /api/health

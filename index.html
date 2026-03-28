@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>每日运势 - Daily Fortune</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 420px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 24px;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        
+        .header .date {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+        
+        /* 设置卡片 */
+        .setup-card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .setup-card h3 {
+            color: #333;
+            margin-bottom: 16px;
+            font-size: 18px;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-group label {
+            display: block;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #666;
+        }
+        
+        .btn-secondary:hover {
+            background: #e0e0e0;
+            box-shadow: none;
+        }
+        
+        /* 运势卡片 */
+        .fortune-card {
+            background: white;
+            border-radius: 24px;
+            padding: 28px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            display: none;
+        }
+        
+        .fortune-card.visible {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .user-info span {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .user-info .nickname {
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        .user-info .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+            width: auto;
+        }
+        
+        .score-section {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: conic-gradient(#667eea var(--score-deg), #f0f0f0 0);
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .score-circle::before {
+            content: '';
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+        }
+        
+        .score-number {
+            position: relative;
+            font-size: 36px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .score-label {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* 运势详情 */
+        .fortune-details {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        
+        .fortune-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+        
+        .fortune-item .label {
+            width: 50px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .fortune-item .bar {
+            flex: 1;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            margin: 0 12px;
+            overflow: hidden;
+        }
+        
+        .fortune-item .bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        .fortune-item .value {
+            width: 30px;
+            text-align: right;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        /* 宜忌 */
+        .tips-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .tip-box {
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .tip-box.good {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+        
+        .tip-box.bad {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        }
+        
+        .tip-box .tip-title {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+        
+        .tip-box .tip-content {
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        /* 幸运信息 */
+        .lucky-info {
+            display: flex;
+            justify-content: space-around;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .lucky-item {
+            text-align: center;
+        }
+        
+        .lucky-item .lucky-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 4px;
+        }
+        
+        .lucky-item .lucky-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #667eea;
+        }
+        
+        /* 打卡按钮 */
+        .checkin-btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .checkin-btn:not(.checked) {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        
+        .checkin-btn.checked {
+            background: #e0e0e0;
+            color: #999;
+            cursor: default;
+        }
+        
+        /* 打卡日历 */
+        .calendar-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            display: none;
+        }
+        
+        .calendar-card.visible {
+            display: block;
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .calendar-header h3 {
+            font-size: 16px;
+            color: #333;
+        }
+        
+        .streak-info {
+            font-size: 14px;
+            color: #667eea;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            text-align: center;
+        }
+        
+        .calendar-grid .weekday {
+            font-size: 12px;
+            color: #999;
+            padding: 8px 0;
+        }
+        
+        .calendar-grid .day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .calendar-grid .day.checked {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .calendar-grid .day.today {
+            border: 2px solid #667eea;
+        }
+        
+        /* 统计卡片 */
+        .stats-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            display: none;
+        }
+        
+        .stats-card.visible {
+            display: block;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            text-align: center;
+        }
+        
+        .stat-item .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-item .stat-label {
+            font-size: 12px;
+            color: #999;
+            margin-top: 4px;
+        }
+        
+        /* 加载状态 */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: white;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 错误提示 */
+        .error-toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: #ff4757;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+        
+        .error-toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+        
+        /* 隐藏类 */
+        .hidden {
+            display: none !important;
+        }
+        
+        /* 响应式 */
+        @media (max-width: 480px) {
+            body {
+                padding: 16px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <div class="header">
+            <h1>✨ 每日运势</h1>
+            <div class="date" id="currentDate"></div>
+        </div>
+        
+        <!-- 设置卡片 -->
+        <div class="setup-card" id="setupCard">
+            <h3>🔮 先告诉我你的生日</h3>
+            <div class="form-group">
+                <label>昵称</label>
+                <input type="text" id="nickname" placeholder="怎么称呼你？">
+            </div>
+            <div class="form-group">
+                <label>出生日期</label>
+                <input type="date" id="birthday" max="">
+            </div>
+            <button class="btn" id="loginBtn" onclick="login()">开始测算</button>
+        </div>
+        
+        <!-- 加载状态 -->
+        <div class="loading hidden" id="loading">
+            <div class="spinner"></div>
+            <div>正在加载...</div>
+        </div>
+        
+        <!-- 运势卡片 -->
+        <div class="fortune-card" id="fortuneCard">
+            <div class="user-info">
+                <span>你好，<span class="nickname" id="displayNickname"></span></span>
+                <button class="btn btn-small btn-secondary" onclick="logout()">切换用户</button>
+            </div>
+            
+            <div class="score-section">
+                <div class="score-circle" id="scoreCircle">
+                    <span class="score-number" id="scoreNumber">0</span>
+                </div>
+                <div class="score-label">今日综合运势</div>
+            </div>
+            
+            <div class="fortune-details">
+                <div class="fortune-item">
+                    <span class="label">事业</span>
+                    <div class="bar"><div class="bar-fill" id="careerBar"></div></div>
+                    <span class="value" id="careerValue">0</span>
+                </div>
+                <div class="fortune-item">
+                    <span class="label">财运</span>
+                    <div class="bar"><div class="bar-fill" id="wealthBar"></div></div>
+                    <span class="value" id="wealthValue">0</span>
+                </div>
+                <div class="fortune-item">
+                    <span class="label">感情</span>
+                    <div class="bar"><div class="bar-fill" id="loveBar"></div></div>
+                    <span class="value" id="loveValue">0</span>
+                </div>
+                <div class="fortune-item">
+                    <span class="label">健康</span>
+                    <div class="bar"><div class="bar-fill" id="healthBar"></div></div>
+                    <span class="value" id="healthValue">0</span>
+                </div>
+            </div>
+            
+            <div class="lucky-info">
+                <div class="lucky-item">
+                    <div class="lucky-label">幸运色</div>
+                    <div class="lucky-value" id="luckyColor">-</div>
+                </div>
+                <div class="lucky-item">
+                    <div class="lucky-label">幸运数字</div>
+                    <div class="lucky-value" id="luckyNumber">-</div>
+                </div>
+                <div class="lucky-item">
+                    <div class="lucky-label">吉时</div>
+                    <div class="lucky-value" id="luckyTime">-</div>
+                </div>
+            </div>
+            
+            <div class="tips-section">
+                <div class="tip-box good">
+                    <div class="tip-title">✅ 宜</div>
+                    <div class="tip-content" id="suitable">-</div>
+                </div>
+                <div class="tip-box bad">
+                    <div class="tip-title">❌ 忌</div>
+                    <div class="tip-content" id="avoid">-</div>
+                </div>
+            </div>
+            
+            <button class="checkin-btn" id="checkinBtn" onclick="checkIn()">
+                今日打卡
+            </button>
+        </div>
+        
+        <!-- 打卡日历 -->
+        <div class="calendar-card" id="calendarCard">
+            <div class="calendar-header">
+                <h3>📅 本月打卡</h3>
+                <span class="streak-info">🔥 连续 <span id="streakDays">0</span> 天</span>
+            </div>
+            <div class="calendar-grid" id="calendarGrid">
+                <!-- 动态生成 -->
+            </div>
+        </div>
+        
+        <!-- 统计卡片 -->
+        <div class="stats-card" id="statsCard">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value" id="totalCheckins">0</div>
+                    <div class="stat-label">累计打卡</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="maxStreak">0</div>
+                    <div class="stat-label">最高连续</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="avgScore">0</div>
+                    <div class="stat-label">平均运势</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 错误提示 -->
+    <div class="error-toast" id="errorToast"></div>
+
+    <script>
+        // ==================== 配置 ====================
+        // 后端 API 地址，部署后修改这里
+        const API_BASE = window.location.hostname === 'localhost' 
+            ? 'http://localhost:3000/api' 
+            : 'https://fortune-backend.onrender.com/api'; // 默认 Render 地址
+        
+        // ==================== 全局状态 ====================
+        let currentUser = null;
+        let todayFortune = null;
+        let hasCheckedIn = false;
+        let checkinHistory = [];
+        let stats = { totalCheckins: 0, streakDays: 0, maxStreak: 0, avgScore: 0 };
+        
+        // ==================== 初始化 ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('birthday').max = new Date().toISOString().split('T')[0];
+            updateCurrentDate();
+            
+            // 检查本地是否有用户信息
+            const savedUser = localStorage.getItem('fortune_user');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                loadFortuneData();
+            }
+        });
+        
+        function updateCurrentDate() {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+            document.getElementById('currentDate').textContent = now.toLocaleDateString('zh-CN', options);
+        }
+        
+        // ==================== API 调用 ====================
+        
+        async function apiCall(endpoint, options = {}) {
+            try {
+                const response = await fetch(`${API_BASE}${endpoint}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...options.headers
+                    },
+                    ...options
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || '请求失败');
+                }
+                
+                return data;
+            } catch (error) {
+                console.error('API 调用失败:', error);
+                showError(error.message);
+                throw error;
+            }
+        }
+        
+        // ==================== 用户认证 ====================
+        
+        async function login() {
+            const nickname = document.getElementById('nickname').value.trim();
+            const birthday = document.getElementById('birthday').value;
+            
+            if (!nickname || !birthday) {
+                showError('请填写完整信息~');
+                return;
+            }
+            
+            showLoading(true);
+            
+            try {
+                const data = await apiCall('/auth', {
+                    method: 'POST',
+                    body: JSON.stringify({ nickname, birthday })
+                });
+                
+                currentUser = data.user;
+                localStorage.setItem('fortune_user', JSON.stringify(currentUser));
+                
+                document.getElementById('setupCard').classList.add('hidden');
+                await loadFortuneData();
+            } catch (error) {
+                showLoading(false);
+            }
+        }
+        
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('fortune_user');
+            location.reload();
+        }
+        
+        // ==================== 运势数据 ====================
+        
+        async function loadFortuneData() {
+            showLoading(true);
+            
+            try {
+                // 并行获取今日运势和打卡历史
+                const [fortuneRes, historyRes] = await Promise.all([
+                    apiCall(`/fortune/${currentUser.id}`),
+                    apiCall(`/checkins/${currentUser.id}?month=${getCurrentMonth()}`)
+                ]);
+                
+                todayFortune = fortuneRes.fortune;
+                hasCheckedIn = fortuneRes.hasCheckedIn;
+                checkinHistory = historyRes.checkins || [];
+                stats = historyRes.stats || { totalCheckins: 0, streakDays: 0, maxStreak: 0, avgScore: 0 };
+                
+                showLoading(false);
+                showFortune();
+            } catch (error) {
+                showLoading(false);
+            }
+        }
+        
+        function getCurrentMonth() {
+            const now = new Date();
+            return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+        }
+        
+        // ==================== UI 显示 ====================
+        
+        function showFortune() {
+            document.getElementById('displayNickname').textContent = currentUser.nickname;
+            
+            const card = document.getElementById('fortuneCard');
+            card.classList.add('visible');
+            
+            // 动画显示分数
+            animateScore(todayFortune.overall);
+            
+            // 设置进度条
+            setTimeout(() => {
+                setBar('career', todayFortune.career, '#667eea');
+                setBar('wealth', todayFortune.wealth, '#f093fb');
+                setBar('love', todayFortune.love, '#f5576c');
+                setBar('health', todayFortune.health, '#4facfe');
+            }, 100);
+            
+            // 设置幸运信息
+            document.getElementById('luckyColor').textContent = todayFortune.luckyColor;
+            document.getElementById('luckyNumber').textContent = todayFortune.luckyNumber;
+            document.getElementById('luckyTime').textContent = todayFortune.luckyTime;
+            document.getElementById('suitable').textContent = todayFortune.suitable;
+            document.getElementById('avoid').textContent = todayFortune.avoid;
+            
+            // 更新打卡按钮
+            updateCheckinButton();
+            
+            // 显示日历和统计
+            document.getElementById('calendarCard').classList.add('visible');
+            document.getElementById('statsCard').classList.add('visible');
+            renderCalendar();
+            updateStats();
+        }
+        
+        function animateScore(target) {
+            const circle = document.getElementById('scoreCircle');
+            const number = document.getElementById('scoreNumber');
+            const deg = (target / 100) * 360;
+            
+            let current = 0;
+            const duration = 1000;
+            const step = target / (duration / 16);
+            
+            function update() {
+                current += step;
+                if (current < target) {
+                    number.textContent = Math.floor(current);
+                    circle.style.setProperty('--score-deg', `${(current / 100) * 360}deg`);
+                    requestAnimationFrame(update);
+                } else {
+                    number.textContent = target;
+                    circle.style.setProperty('--score-deg', `${deg}deg`);
+                }
+            }
+            
+            update();
+        }
+        
+        function setBar(type, value, color) {
+            document.getElementById(`${type}Value`).textContent = value;
+            const bar = document.getElementById(`${type}Bar`);
+            bar.style.width = `${value}%`;
+            bar.style.background = `linear-gradient(90deg, ${color} 0%, ${color}88 100%)`;
+        }
+        
+        // ==================== 打卡功能 ====================
+        
+        async function checkIn() {
+            if (hasCheckedIn) return;
+            
+            const btn = document.getElementById('checkinBtn');
+            btn.disabled = true;
+            btn.textContent = '打卡中...';
+            
+            try {
+                await apiCall('/checkin', {
+                    method: 'POST',
+                    body: JSON.stringify({ userId: currentUser.id })
+                });
+                
+                hasCheckedIn = true;
+                btn.classList.add('checked');
+                btn.textContent = '✅ 打卡成功！';
+                
+                // 刷新数据
+                await loadFortuneData();
+                
+                setTimeout(() => {
+                    btn.textContent = '已打卡 ✨';
+                }, 1500);
+            } catch (error) {
+                btn.disabled = false;
+                btn.textContent = '今日打卡';
+            }
+        }
+        
+        function updateCheckinButton() {
+            const btn = document.getElementById('checkinBtn');
+            
+            if (hasCheckedIn) {
+                btn.classList.add('checked');
+                btn.textContent = '已打卡 ✨';
+                btn.disabled = true;
+            } else {
+                btn.classList.remove('checked');
+                btn.textContent = '今日打卡';
+                btn.disabled = false;
+            }
+        }
+        
+        // ==================== 日历和统计 ====================
+        
+        function renderCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            grid.innerHTML = '';
+            
+            // 星期标题
+            const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+            weekdays.forEach(day => {
+                const div = document.createElement('div');
+                div.className = 'weekday';
+                div.textContent = day;
+                grid.appendChild(div);
+            });
+            
+            // 获取当月日期
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth();
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const today = now.getDate();
+            
+            // 空白填充
+            for (let i = 0; i < firstDay; i++) {
+                const div = document.createElement('div');
+                grid.appendChild(div);
+            }
+            
+            // 打卡日期集合
+            const checkedDates = new Set(checkinHistory.map(c => parseInt(c.date.split('-')[2])));
+            
+            // 日期
+            for (let day = 1; day <= daysInMonth; day++) {
+                const div = document.createElement('div');
+                div.className = 'day';
+                div.textContent = day;
+                
+                if (checkedDates.has(day)) {
+                    div.classList.add('checked');
+                }
+                
+                if (day === today) {
+                    div.classList.add('today');
+                }
+                
+                grid.appendChild(div);
+            }
+            
+            // 更新连续天数
+            document.getElementById('streakDays').textContent = stats.streakDays;
+        }
+        
+        function updateStats() {
+            document.getElementById('totalCheckins').textContent = stats.totalCheckins;
+            document.getElementById('maxStreak').textContent = stats.maxStreak;
+            document.getElementById('avgScore').textContent = stats.avgScore;
+        }
+        
+        // ==================== 工具函数 ====================
+        
+        function showLoading(show) {
+            document.getElementById('loading').classList.toggle('hidden', !show);
+        }
+        
+        function showError(message) {
+            const toast = document.getElementById('errorToast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
