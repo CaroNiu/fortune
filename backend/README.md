@@ -12,59 +12,45 @@ fortune/
     └── render.yaml     # Render 部署配置
 ```
 
-## 🚀 部署步骤
+## 🚀 一键部署
 
-### 第一步：创建 MongoDB 数据库（免费）
+### 方式一：一键部署到 Render（推荐）
 
-1. 访问 https://www.mongodb.com/atlas
-2. 注册/登录，选择 **免费版 (M0)**
-3. 创建 Cluster，选择 AWS / Singapore 地区
-4. 在 **Database Access** 创建用户（记住用户名密码）
-5. 在 **Network Access** 添加 IP：`0.0.0.0/0`（允许所有IP）
-6. 点击 **Connect** → Drivers → Node.js → 复制连接字符串
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/CaroNiu/fortune)
 
-连接字符串格式：
+点击上面的按钮，登录 Render 账号即可自动部署。
+
+MongoDB 已配置完成，无需额外设置。
+
+### 方式二：手动部署
+
+1. 访问 https://render.com
+2. 登录后点击 **New +** → **Web Service**
+3. 选择 GitHub 仓库 `CaroNiu/fortune`
+4. 配置会自动读取 `render.yaml`，直接点击 **Create Web Service**
+5. 等待 2-3 分钟部署完成
+
+### 获取后端地址
+
+部署完成后，Render 会给你分配一个域名：
 ```
-mongodb+srv://username:password@cluster.xxx.mongodb.net/fortune?retryWrites=true&w=majority
+https://fortune-backend-xxx.onrender.com
 ```
 
-### 第二步：部署后端到 Render（免费）
+复制这个地址，下一步更新到前端。
 
-1. 把代码推送到 GitHub 仓库
-2. 访问 https://render.com
-3. 登录后点击 **New +** → **Web Service**
-4. 选择你的 GitHub 仓库
-5. 配置：
-   - **Name**: fortune-backend
-   - **Runtime**: Node
-   - **Build Command**: `npm install`
-   - **Start Command**: `node server.js`
-6. 添加环境变量：
-   - `MONGODB_URI`: 你的 MongoDB 连接字符串
-7. 点击 **Create Web Service**
-8. 等待部署完成，复制生成的域名
+### 更新前端 API 地址
 
-### 第三步：更新前端 API 地址
-
-编辑 `index.html`，找到这行：
-
+编辑 `index.html` 第 251 行，把：
 ```javascript
-const API_BASE = window.location.hostname === 'localhost' 
-    ? 'http://localhost:3000/api' 
-    : 'https://fortune-backend.onrender.com/api';
+const API_BASE = 'https://fortune-backend.onrender.com/api';
 ```
 
-把 `https://fortune-backend.onrender.com/api` 换成你的 Render 域名。
+换成你的实际域名。
 
-### 第四步：部署前端
+### 部署前端
 
-把 `index.html` 部署到任何静态托管：
-- Vercel
-- Netlify
-- GitHub Pages
-- 腾讯云静态托管
-
-或者直接双击在本地打开也能用（连接线上后端）。
+把 `index.html` 部署到 Vercel / Netlify / GitHub Pages，或者直接本地打开也能用。
 
 ---
 
