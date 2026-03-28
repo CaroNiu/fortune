@@ -63,6 +63,10 @@
         .bindings-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
         .binding-item { display: flex; align-items: center; justify-content: space-between; padding: 12px; background: #f8f9fa; border-radius: 8px; }
         .provider-icon { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; margin-right: 8px; }
+        .empty-state { text-align: center; color: #999; padding: 40px 20px; }
+        .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+        .empty-state .title { font-size: 14px; margin-bottom: 8px; }
+        .empty-state .subtitle { font-size: 12px; opacity: 0.8; }
     </style>
 </head>
 <body>
@@ -359,10 +363,22 @@
             document.getElementById('weekList').innerHTML = html;
         }
         
-        // 排行榜
+        // 排行榜 - 修复空状态
         async function loadRanking(type) {
             const res = await fetchWithAuth('/rankings?type=' + type);
             if (!res.success) return;
+            
+            // 空状态提示
+            if (!res.rankings || res.rankings.length === 0) {
+                document.getElementById('rankingList').innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">📭</div>
+                        <div class="title">暂无${type === 'today' ? '今日运势' : '连续打卡'}排行</div>
+                        <div class="subtitle">快来打卡，成为第一个上榜的人吧！</div>
+                    </div>
+                `;
+                return;
+            }
             
             const html = res.rankings.map((r, i) => `
                 <div class="ranking-item">
@@ -379,6 +395,17 @@
             const res = await fetchWithAuth('/memos?date=' + new Date().toISOString().split('T')[0]);
             if (!res.success) return;
             
+            if (!res.memos || res.memos.length === 0) {
+                document.getElementById('memoList').innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">📝</div>
+                        <div class="title">暂无备忘</div>
+                        <div class="subtitle">添加今日待办事项</div>
+                    </div>
+                `;
+                return;
+            }
+            
             const html = res.memos.map(m => `
                 <div class="memo-item">
                     <input type="checkbox" class="memo-checkbox" ${m.isDone ? 'checked' : ''} onchange="toggleMemo('${m._id}', this.checked)">
@@ -386,7 +413,7 @@
                     <span onclick="deleteMemo('${m._id}')" style="color:#ff4757;cursor:pointer;">×</span>
                 </div>
             `).join('');
-            document.getElementById('memoList').innerHTML = html || '<div style="text-align:center;color:#999;padding:20px;">暂无备忘</div>';
+            document.getElementById('memoList').innerHTML = html;
         }
         
         async function addMemo() {
