@@ -1,0 +1,44 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Deploy to Tencent Cloud Server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        port: ${{ secrets.PORT }}
+        script: |
+          echo "🚀 开始部署..."
+          cd /opt/fortune
+          
+          # 备份原文件
+          cp backend/server.js backend/server.js.bak 2>/dev/null || true
+          cp index.html index.html.bak 2>/dev/null || true
+          
+          # 拉取最新代码
+          echo "📦 拉取最新代码..."
+          git fetch origin main
+          git reset --hard origin/main
+          
+          # 安装依赖
+          echo "📥 安装依赖..."
+          cd backend
+          npm install
+          
+          # 重启服务
+          echo "🔄 重启服务..."
+          pm2 restart fortune || pm2 start server.js --name fortune
+          
+          echo "✅ 部署完成！"
+          pm2 status
