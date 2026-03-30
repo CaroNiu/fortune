@@ -91,6 +91,64 @@
         .knowledge-content .advice-item { display: flex; align-items: center; padding: 10px 14px; background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%); border-radius: 10px; font-size: 13px; }
         .knowledge-content .advice-item::before { content: '✓'; width: 20px; height: 20px; background: #667eea; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; margin-right: 10px; flex-shrink: 0; }
         .knowledge-content .synthesis { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 14px; border-radius: 12px; font-size: 14px; line-height: 1.6; margin-top: 16px; }
+        
+        /* ==================== 统一弹窗系统 ==================== */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); display: none; align-items: flex-end; justify-content: center; z-index: 1000; backdrop-filter: blur(4px); }
+        .modal-overlay.active { display: flex; }
+        .modal-overlay.center { align-items: center; }
+        .modal-content { background: white; width: 100%; max-width: 420px; max-height: 85vh; overflow-y: auto; border-radius: 24px; padding: 0; animation: modalSlideUp 0.3s ease; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+        .modal-overlay.center .modal-content { border-radius: 20px; animation: modalFadeIn 0.25s ease; max-height: 90vh; }
+        @keyframes modalSlideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes modalFadeIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        
+        /* 弹窗头部 */
+        .modal-header { display: flex; align-items: center; padding: 20px 24px 16px; border-bottom: 1px solid #f0f0f0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 24px 24px 0 0; }
+        .modal-overlay.center .modal-header { border-radius: 20px 20px 0 0; }
+        .modal-header-icon { width: 44px; height: 44px; border-radius: 12px; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-right: 14px; }
+        .modal-header h3 { flex: 1; font-size: 17px; font-weight: 600; }
+        .modal-close { width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(255,255,255,0.2); color: white; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+        .modal-close:hover { background: rgba(255,255,255,0.3); }
+        
+        /* 弹窗主体 */
+        .modal-body { padding: 24px; }
+        .modal-footer { padding: 16px 24px 24px; border-top: 1px solid #f0f0f0; display: flex; gap: 12px; }
+        .modal-footer .btn { flex: 1; }
+        
+        /* 表单样式 */
+        .form-group { margin-bottom: 16px; }
+        .form-group:last-child { margin-bottom: 0; }
+        .form-label { display: block; font-size: 14px; color: #666; margin-bottom: 8px; font-weight: 500; }
+        .form-input { width: 100%; padding: 14px 16px; border: 2px solid #e8e8e8; border-radius: 12px; font-size: 15px; transition: border-color 0.2s; background: #fafafa; }
+        .form-input:focus { outline: none; border-color: #667eea; background: white; }
+        .form-input::placeholder { color: #aaa; }
+        .input-group { display: flex; gap: 10px; }
+        .input-group .form-input { flex: 1; }
+        .btn-code { padding: 0 16px; white-space: nowrap; font-size: 13px; }
+        
+        /* 登录方式切换 */
+        .login-tabs { display: flex; gap: 8px; margin-bottom: 20px; padding: 4px; background: #f5f5f5; border-radius: 12px; }
+        .login-tab { flex: 1; padding: 10px; border: none; border-radius: 10px; background: transparent; color: #666; font-size: 14px; cursor: pointer; transition: all 0.2s; }
+        .login-tab.active { background: white; color: #667eea; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        
+        /* 分享弹窗 */
+        .share-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 20px 0; }
+        .share-item { display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; padding: 12px; border-radius: 12px; transition: background 0.2s; }
+        .share-item:hover { background: #f5f5f5; }
+        .share-icon { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .share-icon.wechat { background: linear-gradient(135deg, #07C160, #05a350); }
+        .share-icon.moments { background: linear-gradient(135deg, #07C160, #05a350); }
+        .share-icon.qq { background: linear-gradient(135deg, #12B7F5, #0a9bd4); }
+        .share-icon.copy { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .share-text { font-size: 13px; color: #666; }
+        .share-link { background: #f5f5f5; padding: 12px 16px; border-radius: 10px; font-size: 13px; color: #666; display: flex; align-items: center; gap: 8px; }
+        .share-link input { flex: 1; border: none; background: transparent; font-size: 13px; color: #333; outline: none; }
+        
+        /* 快速体验 */
+        .quick-tips { background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%); padding: 16px; border-radius: 12px; margin-bottom: 20px; }
+        .quick-tips h4 { font-size: 14px; color: #333; margin-bottom: 8px; }
+        .quick-tips p { font-size: 13px; color: #666; line-height: 1.6; }
+        .quick-tips ul { margin: 8px 0 0 16px; padding: 0; }
+        .quick-tips li { font-size: 13px; color: #666; margin-bottom: 4px; }
         .memo-checkbox { width: 20px; height: 20px; margin-right: 12px; }
         .memo-text { flex: 1; font-size: 14px; }
         .memo-text.done { text-decoration: line-through; color: #999; }
@@ -249,36 +307,162 @@
         <div id="accountPage" class="hidden"><div class="card"><h3>👤 账户信息</h3><div id="accountInfo"></div><button class="btn btn-secondary" onclick="logout()" style="margin-top:20px;">退出登录</button></div></div>
     </div>
     
-    <!-- 知识解读弹窗 -->
-    <div class="modal-overlay" id="knowledgeModal" onclick="closeKnowledgeModal(event)">
+    <!-- ==================== 统一弹窗系统 ==================== -->
+    
+    <!-- 登录弹窗 -->
+    <div class="modal-overlay center" id="loginModal" onclick="closeModal('loginModal', event)">
         <div class="modal-content" onclick="event.stopPropagation()">
             <div class="modal-header">
-                <div class="modal-icon" id="knowledgeModalIcon">💼</div>
+                <div class="modal-header-icon">🔐</div>
+                <h3>用户登录</h3>
+                <button class="modal-close" onclick="closeModal('loginModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="login-tabs">
+                    <button class="login-tab active" onclick="switchLoginTab('email')" id="tab-email">📧 邮箱登录</button>
+                    <button class="login-tab" onclick="switchLoginTab('local')" id="tab-local">👤 快速登录</button>
+                </div>
+                
+                <!-- 邮箱登录 -->
+                <div id="loginEmailForm">
+                    <div class="form-group">
+                        <label class="form-label">邮箱地址</label>
+                        <input type="email" class="form-input" id="modalLoginEmail" placeholder="请输入邮箱">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">验证码</label>
+                        <div class="input-group">
+                            <input type="text" class="form-input" id="modalLoginCode" placeholder="6位验证码" maxlength="6">
+                            <button class="btn btn-secondary btn-code" onclick="sendLoginCode()" id="modalLoginSendBtn">获取验证码</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 快速登录 -->
+                <div id="loginLocalForm" class="hidden">
+                    <div class="form-group">
+                        <label class="form-label">昵称</label>
+                        <input type="text" class="form-input" id="modalQuickNickname" placeholder="给自己起个名字">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">生日</label>
+                        <input type="date" class="form-input" id="modalQuickBirthday">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('loginModal')">取消</button>
+                <button class="btn" onclick="submitLogin()">登录</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 快速体验弹窗 -->
+    <div class="modal-overlay center" id="quickModal" onclick="closeModal('quickModal', event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-header-icon">⚡</div>
+                <h3>快速体验</h3>
+                <button class="modal-close" onclick="closeModal('quickModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="quick-tips">
+                    <h4>👋 欢迎体验每日运势</h4>
+                    <p>无需注册，快速体验以下功能：</p>
+                    <ul>
+                        <li>✨ 查看今日运势评分</li>
+                        <li>📅 查看本周运势趋势</li>
+                        <li>📚 浏览 AI 运势知识</li>
+                    </ul>
+                    <p style="margin-top:8px;color:#999;">⚠️ 体验模式下数据不会保存，建议注册账号获得完整体验</p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">昵称（可选）</label>
+                    <input type="text" class="form-input" id="modalGuestNickname" placeholder="游客" value="游客">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">生日（用于运势计算）</label>
+                    <input type="date" class="form-input" id="modalGuestBirthday" value="2000-01-01">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('quickModal')">取消</button>
+                <button class="btn" onclick="submitQuickLogin()">立即体验</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 分享弹窗 -->
+    <div class="modal-overlay center" id="shareModal" onclick="closeModal('shareModal', event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-header-icon">📤</div>
+                <h3>分享运势</h3>
+                <button class="modal-close" onclick="closeModal('shareModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <p style="text-align:center;color:#666;margin-bottom:20px;">分享给好友，一起查看今日运势</p>
+                <div class="share-grid">
+                    <div class="share-item" onclick="shareTo('wechat')">
+                        <div class="share-icon wechat">💬</div>
+                        <span class="share-text">微信</span>
+                    </div>
+                    <div class="share-item" onclick="shareTo('moments')">
+                        <div class="share-icon moments">📱</div>
+                        <span class="share-text">朋友圈</span>
+                    </div>
+                    <div class="share-item" onclick="shareTo('qq')">
+                        <div class="share-icon qq">🐧</div>
+                        <span class="share-text">QQ</span>
+                    </div>
+                    <div class="share-item" onclick="copyShareLink()">
+                        <div class="share-icon copy">🔗</div>
+                        <span class="share-text">复制链接</span>
+                    </div>
+                </div>
+                <div class="share-link">
+                    <span>🔗</span>
+                    <input type="text" id="shareUrl" value="https://novasolo.online" readonly>
+                    <button class="btn btn-secondary" style="width:auto;padding:6px 12px;font-size:12px;" onclick="copyShareLink()">复制</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 知识解读弹窗（更新为统一样式） -->
+    <div class="modal-overlay" id="knowledgeModal" onclick="closeModal('knowledgeModal', event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-header-icon" id="knowledgeModalIcon">💼</div>
                 <h3 id="knowledgeModalTitle">事业运势解读</h3>
-                <button class="close-btn" onclick="closeKnowledgeModal()">×</button>
+                <button class="modal-close" onclick="closeModal('knowledgeModal')">×</button>
             </div>
-            <div class="knowledge-tab">
-                <button class="active" onclick="switchKnowledgeTab('chinese')" id="tab-chinese">🇨🇳 中国传统</button>
-                <button onclick="switchKnowledgeTab('western')" id="tab-western">🔮 西方占星</button>
-            </div>
-            <div id="knowledgeLoading" style="text-align:center;padding:40px;">
-                <div style="font-size:32px;margin-bottom:12px;">⏳</div>
-                <div>AI 正在生成运势解读...</div>
-            </div>
-            <div id="knowledgeContent" class="hidden">
-                <div class="knowledge-content" id="chineseContent">
-                    <h4 id="chineseTitle"></h4>
-                    <div class="concept" id="chineseConcept"></div>
-                    <div class="interpretation" id="chineseInterpretation"></div>
-                    <div class="advice-list" id="chineseAdvice"></div>
+            <div class="modal-body" style="padding:0;">
+                <div class="knowledge-tab">
+                    <button class="active" onclick="switchKnowledgeTab('chinese')" id="tab-chinese">🇨🇳 中国传统</button>
+                    <button onclick="switchKnowledgeTab('western')" id="tab-western">🔮 西方占星</button>
                 </div>
-                <div class="knowledge-content hidden" id="westernContent">
-                    <h4 id="westernTitle"></h4>
-                    <div class="concept" id="westernConcept"></div>
-                    <div class="interpretation" id="westernInterpretation"></div>
-                    <div class="advice-list" id="westernAdvice"></div>
+                <div style="padding:0 24px 24px;">
+                    <div id="knowledgeLoading" style="text-align:center;padding:40px;">
+                        <div style="font-size:32px;margin-bottom:12px;">⏳</div>
+                        <div>AI 正在生成运势解读...</div>
+                    </div>
+                    <div id="knowledgeContent" class="hidden">
+                        <div class="knowledge-content" id="chineseContent">
+                            <h4 id="chineseTitle"></h4>
+                            <div class="concept" id="chineseConcept"></div>
+                            <div class="interpretation" id="chineseInterpretation"></div>
+                            <div class="advice-list" id="chineseAdvice"></div>
+                        </div>
+                        <div class="knowledge-content hidden" id="westernContent">
+                            <h4 id="westernTitle"></h4>
+                            <div class="concept" id="westernConcept"></div>
+                            <div class="interpretation" id="westernInterpretation"></div>
+                            <div class="advice-list" id="westernAdvice"></div>
+                        </div>
+                        <div class="synthesis" id="knowledgeSynthesis"></div>
+                    </div>
                 </div>
-                <div class="synthesis" id="knowledgeSynthesis"></div>
             </div>
         </div>
     </div>
@@ -441,10 +625,172 @@
             return fetch(`${API_BASE}${url}`, options).then(r => r.json());
         }
         
-        function share() { const text = `今日运势：${currentAccount?.nickname || ''} 的综合运势是 ${document.getElementById('scoreNumber').textContent} 分！`; if (navigator.share) navigator.share({ title: '每日运势', text, url: location.href }); else alert('复制分享：\n' + text); }
         function showVIP() { switchPage('account'); }
         function buyVIP(type) { alert(`创建${type === 'month' ? '月度' : '年度'}VIP订单\n需接入真实支付`); }
         function logout() { localStorage.removeItem('fortune_token'); localStorage.removeItem('fortune_account'); location.reload(); }
+        
+        // ==================== 统一弹窗系统 ====================
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+        
+        function closeModal(modalId, event) {
+            if (event && event.target !== event.currentTarget) return;
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+        
+        // ESC 键关闭弹窗
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal-overlay.active').forEach(modal => {
+                    modal.classList.remove('active');
+                });
+                document.body.style.overflow = '';
+            }
+        });
+        
+        // ==================== 登录弹窗 ====================
+        let currentLoginTab = 'email';
+        
+        function showLoginModal() {
+            if (currentAccount) {
+                showToast('您已登录');
+                return;
+            }
+            openModal('loginModal');
+            switchLoginTab('email');
+        }
+        
+        function switchLoginTab(tab) {
+            currentLoginTab = tab;
+            document.getElementById('tab-email').classList.toggle('active', tab === 'email');
+            document.getElementById('tab-local').classList.toggle('active', tab === 'local');
+            document.getElementById('loginEmailForm').classList.toggle('hidden', tab !== 'email');
+            document.getElementById('loginLocalForm').classList.toggle('hidden', tab !== 'local');
+        }
+        
+        let loginCodeTimer = null;
+        function sendLoginCode() {
+            const email = document.getElementById('modalLoginEmail').value;
+            if (!email || !email.includes('@')) {
+                showToast('请输入有效邮箱');
+                return;
+            }
+            const btn = document.getElementById('modalLoginSendBtn');
+            btn.disabled = true;
+            let countdown = 60;
+            btn.textContent = `${countdown}s`;
+            loginCodeTimer = setInterval(() => {
+                countdown--;
+                btn.textContent = countdown > 0 ? `${countdown}s` : '获取验证码';
+                if (countdown <= 0) {
+                    clearInterval(loginCodeTimer);
+                    btn.disabled = false;
+                }
+            }, 1000);
+            showToast('验证码已发送（演示模式）');
+        }
+        
+        async function submitLogin() {
+            if (currentLoginTab === 'email') {
+                const email = document.getElementById('modalLoginEmail').value;
+                const code = document.getElementById('modalLoginCode').value;
+                if (!email || !code) {
+                    showToast('请填写完整信息');
+                    return;
+                }
+                // 演示模式直接成功
+                showToast('登录成功（演示模式）');
+                closeModal('loginModal');
+            } else {
+                const nickname = document.getElementById('modalQuickNickname').value || '用户' + Math.floor(Math.random() * 1000);
+                const birthday = document.getElementById('modalQuickBirthday').value || '2000-01-01';
+                await loginWithLocalQuick(nickname, birthday);
+                closeModal('loginModal');
+            }
+        }
+        
+        // ==================== 快速体验弹窗 ====================
+        function showQuickLogin() {
+            if (currentAccount) {
+                showToast('您已登录');
+                return;
+            }
+            openModal('quickModal');
+        }
+        
+        async function submitQuickLogin() {
+            const nickname = document.getElementById('modalGuestNickname').value || '游客';
+            const birthday = document.getElementById('modalGuestBirthday').value || '2000-01-01';
+            await loginWithLocalQuick(nickname, birthday);
+            closeModal('quickModal');
+        }
+        
+        async function loginWithLocalQuick(nickname, birthday) {
+            const res = await fetch(`${API_BASE}/auth/local`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nickname, birthday }) }).then(r => r.json());
+            if (res.success) handleLoginSuccess(res);
+        }
+        
+        // ==================== 分享弹窗 ====================
+        function share() {
+            openModal('shareModal');
+            const text = `今日运势：${currentAccount?.nickname || '我'} 的综合运势是 ${document.getElementById('scoreNumber')?.textContent || '80'} 分！快来测测你的运势吧~`;
+            document.getElementById('shareUrl').value = location.href;
+        }
+        
+        function shareTo(platform) {
+            const url = encodeURIComponent(location.href);
+            const text = encodeURIComponent(`今日运势：${currentAccount?.nickname || '我'} 的综合运势是 ${document.getElementById('scoreNumber')?.textContent || '80'} 分！`);
+            
+            const urls = {
+                wechat: '#',
+                moments: '#',
+                qq: `https://connect.qq.com/widget/shareqq/index.html?url=${url}&title=${text}`
+            };
+            
+            if (platform === 'wechat' || platform === 'moments') {
+                showToast('请使用微信扫一扫分享');
+            } else {
+                window.open(urls[platform], '_blank');
+            }
+        }
+        
+        function copyShareLink() {
+            const input = document.getElementById('shareUrl');
+            input.select();
+            document.execCommand('copy');
+            showToast('链接已复制到剪贴板');
+        }
+        
+        // ==================== Toast 提示 ====================
+        function showToast(message, duration = 2000) {
+            const existing = document.querySelector('.toast-message');
+            if (existing) existing.remove();
+            
+            const toast = document.createElement('div');
+            toast.className = 'toast-message';
+            toast.textContent = message;
+            toast.style.cssText = `
+                position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                background: rgba(0,0,0,0.8); color: white; padding: 12px 24px;
+                border-radius: 8px; font-size: 14px; z-index: 9999;
+                animation: fadeIn 0.2s ease;
+            `;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'fadeOut 0.2s ease';
+                setTimeout(() => toast.remove(), 200);
+            }, duration);
+        }
         
         // ==================== 运势知识功能 ====================
         let currentKnowledgeTheme = null;
@@ -459,7 +805,7 @@
         
         async function showKnowledge(theme) {
             if (!currentAccount) {
-                alert('请先登录后查看 AI 运势解读');
+                showToast('请先登录后查看 AI 运势解读');
                 return;
             }
             
@@ -468,7 +814,7 @@
             
             document.getElementById('knowledgeModalIcon').textContent = t.icon;
             document.getElementById('knowledgeModalTitle').textContent = t.name + '运势解读';
-            document.getElementById('knowledgeModal').classList.add('active');
+            openModal('knowledgeModal');
             document.getElementById('knowledgeLoading').classList.remove('hidden');
             document.getElementById('knowledgeContent').classList.add('hidden');
             
@@ -479,13 +825,13 @@
                     currentKnowledgeData = res.knowledge;
                     renderKnowledge();
                 } else {
-                    alert('获取解读失败，请重试');
-                    closeKnowledgeModal();
+                    showToast('获取解读失败，请重试');
+                    closeModal('knowledgeModal');
                 }
             } catch (err) {
                 console.error('获取知识失败:', err);
-                alert('网络错误，请重试');
-                closeKnowledgeModal();
+                showToast('网络错误，请重试');
+                closeModal('knowledgeModal');
             }
         }
         
@@ -520,35 +866,6 @@
             document.getElementById('tab-western').classList.toggle('active', tab === 'western');
             document.getElementById('chineseContent').classList.toggle('hidden', tab !== 'chinese');
             document.getElementById('westernContent').classList.toggle('hidden', tab !== 'western');
-        }
-        
-        function closeKnowledgeModal(e) {
-            if (!e || e.target.id === 'knowledgeModal') {
-                document.getElementById('knowledgeModal').classList.remove('active');
-                currentKnowledgeTheme = null;
-                currentKnowledgeData = null;
-            }
-        }
-        
-        // ==================== 顶部导航功能 ====================
-        function showQuickLogin() {
-            const nickname = prompt('请输入昵称：') || '游客' + Math.floor(Math.random() * 1000);
-            const birthday = prompt('请输入生日（YYYY-MM-DD，用于运势计算）：') || '2000-01-01';
-            loginWithLocalQuick(nickname, birthday);
-        }
-        
-        async function loginWithLocalQuick(nickname, birthday) {
-            const res = await fetch(`${API_BASE}/auth/local`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nickname, birthday }) }).then(r => r.json());
-            if (res.success) handleLoginSuccess(res);
-        }
-        
-        function showLoginModal() {
-            // 滚动到登录卡片
-            document.getElementById('loginCard').scrollIntoView({ behavior: 'smooth' });
-            // 如果没有登录卡片显示，先显示它
-            if (currentAccount) {
-                alert('您已登录');
-            }
         }
         
         function updateAuthUI() {
